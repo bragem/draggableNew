@@ -1,25 +1,47 @@
-import logo from './logo.svg';
 import './App.css';
+import Draggable from "react-draggable";
+import React, { useState } from "react";
+
 
 function App() {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const trackPos = (data) => {
+    setPosition({ x: data.x, y: data.y });
+  };
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+    <div id="start">
+      <Draggable
+      axis="x"
+      defaultPosition={{x: 550, y: 800}}
+      onDrag={(e, data) => trackPos(data)}
+      >
+        <div className="box">
+          <div>Move me around!</div>
+        </div>
+      </Draggable>
+    </div>
+
+    <div id="end">
+      <Draggable
+          axis="x"
+          defaultPosition={{x: 800, y: 800}}
+          onDrag={(e, data) => trackPos(data)}
+      >
+        <div className="box">
+          <div>x: {position.x.toFixed(0)}, y: {position.y.toFixed(0)}</div>
+        </div>
+      </Draggable>
+
+    </div>
+
+
     </div>
   );
 }
+
 
 export default App;
