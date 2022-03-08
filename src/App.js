@@ -19,9 +19,6 @@ function App() {
       defaultPosition={{x: 550, y: 400}}
       onDrag={(e, data) => trackPos(data)}
       >
-        <div className="box">
-          <div>x: {position.x.toFixed(0)}, y: {position.y.toFixed(0)}</div>
-        </div>
       </Editor>
     </div>
 
