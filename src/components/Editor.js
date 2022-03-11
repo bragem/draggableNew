@@ -1,28 +1,33 @@
 import Draggable from "react-draggable";
-import {useState} from "react";
-const radius = 35
+import { useState, useRef } from "react";
+import ReactPlayer from "react-player";
+const radius = 3;
 
-export default function Editor(){
-    const [startPos, setStartPosition] = useState({ x: 0, y: 0 });
-    const [endPos, setEndPosition] = useState({ x: 200, y: 0 });
+export default function Editor() {
+    let maxBound = 640 + radius;
+    let minBound = 0;
+
+    const [startRightBound, setStartBound] = useState(maxBound - radius * 2);
+    const [endLeftBound, setEndBound] = useState(minBound + radius * 2);
+    const graphsVideoRef = useRef(null);
+    const [seekerPos, changeSeekerPos] = useState(maxBound - radius * 2);
+    // const [endPos, changeEndPos] = useState(minBound + radius * 2);
 
 
-    function checkStartCollision(data) {
-        setStartPosition({ x: data.x, y: data.y });
-        if(startPos.x+radius>=endPos.x-radius){
-            //forsøk på å endre posisjon manuelt når boksene kolliderer, funker ikke
-            // setStartPosition({x:data.x+radius, y:data.y})
-            console.log("Startbox collision")
+    function handleDrag(data, name) {
+        if (name === "start") {
+            setEndBound(data.x + radius * 2);
+            graphsVideoRef.current.seekTo(data.x / maxBound);
+        } else if (name === "end") {
+            setStartBound(data.x - radius * 2);
         }
+
     }
 
-
-    function checkEndCollision(data) {
-        setEndPosition({ x: data.x, y: data.y });
-        if(endPos.x-radius<=startPos.x+radius){
-            // endPos.x = startPos.x
-            console.log("Endbox collision")
-        }
+    function handleProgress(state) {
+        let x = state.played * maxBound;
+        console.log(x);
+        changeSeekerPos(x);
     }
 
 
@@ -39,24 +44,47 @@ export default function Editor(){
 
 
     return (
-        <div>
+        <div style={{ margin: 20 }}>
+
+
+            <ReactPlayer
+                ref={graphsVideoRef}
+                url='https://www.youtube.com/watch?v=NKaA0IPcD_Q&ab_channel=IB-PROCADDd.o.o.'
+                controls={true}
+                onProgress={(state) => handleProgress(state)}
+
+            />
             <Draggable
                 axis="x"
-                onDrag={(e,data) => checkStartCollision(data)}
+                onDrag={(e, data) => handleDrag(data, "start")}
                 id="start"
-                defaultPosition={{x: 0, y: 0}}
+                defaultPosition={{ x: minBound, y: 0 }}
+                bounds={{ left: minBound, right: startRightBound }}
             >
-                <div className="box">Start</div>
+                <div className="box" style={{ width: 3, margin: 0, padding: 0, backgroundColor: 'red', border: 0, height: 70 }}></div>
             </Draggable>
+
             <Draggable
-                defaultPosition={{x: 200, y: 0}}
                 axis="x"
-                onDrag={(e,data) => checkEndCollision(data)}
-                id="end"
+                onDrag={(e, data) => handleDrag(data, "seeker")}
+                id="seeker"
+                defaultPosition={{ x: minBound, y: 0 }}
+                bounds={{ left: minBound + 10, right: startRightBound - 3 }}
+                position={{ x: seekerPos, y: 0 }}
             >
-                <div className="box">End</div>
+                <div className="seeker" style={{ width: 3, margin: 0, padding: 0, backgroundColor: 'gray', border: 0, height: 70 }}></div>
             </Draggable>
-        </div>
+
+            <Draggable
+                defaultPosition={{ x: maxBound - 3, y: -70 }}
+                axis="x"
+                onDrag={(e, data) => handleDrag(data, "end")}
+                id="end"
+                bounds={{ left: endLeftBound, right: maxBound - 3 }}
+            >
+                <div className="box" style={{ width: 3, margin: 0, padding: 0, backgroundColor: 'red', border: 0, height: 70 }}></div>
+            </Draggable>
+        </div >
 
     )
 }
