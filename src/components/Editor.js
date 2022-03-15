@@ -16,8 +16,15 @@ export default function Editor() {
 
     function handleDrag(data, name) {
         if (name === "start") {
-            setEndBound(data.x + radius * 2);
+            // if (data.x + radius * 2 > seekerPos) {
+
+            // }
+
+            changeSeekerPos(data.x + radius * 2);
             graphsVideoRef.current.seekTo(data.x / maxBound);
+            setEndBound(data.x + radius * 2);
+
+
         } else if (name === "end") {
             setStartBound(data.x - radius * 2);
         }
@@ -54,6 +61,7 @@ export default function Editor() {
                 onProgress={(state) => handleProgress(state)}
 
             />
+
             <Draggable
                 axis="x"
                 onDrag={(e, data) => handleDrag(data, "start")}
@@ -61,7 +69,7 @@ export default function Editor() {
                 defaultPosition={{ x: minBound, y: 0 }}
                 bounds={{ left: minBound, right: startRightBound }}
             >
-                <div className="box" style={{ width: 3, margin: 0, padding: 0, backgroundColor: 'red', border: 0, height: 70 }}></div>
+                <div className="box" style={{ width: 6, margin: 0, padding: 0, backgroundColor: 'red', border: 0, height: 70 }}></div>
             </Draggable>
 
             <Draggable
@@ -82,7 +90,7 @@ export default function Editor() {
                 id="end"
                 bounds={{ left: endLeftBound, right: maxBound - 3 }}
             >
-                <div className="box" style={{ width: 3, margin: 0, padding: 0, backgroundColor: 'red', border: 0, height: 70 }}></div>
+                <div className="box" style={{ width: 6, margin: 0, padding: 0, backgroundColor: 'red', border: 0, height: 70 }}></div>
             </Draggable>
         </div >
 
