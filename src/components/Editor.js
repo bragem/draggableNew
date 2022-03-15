@@ -31,8 +31,11 @@ export default function Editor() {
         } else if (name === "end") {
             setStartBound(data.x - radius * 2);
 
-        }else if(name === "seeker"){
-            graphsVideoRef.current.seekTo(data.x / maxBound);
+        }
+        else if(name === "seeker"){
+            let pos = data.x/maxBound
+            graphsVideoRef.current.seekTo(pos);
+            changeSeekerPos(pos)
         }
 
 
@@ -90,7 +93,7 @@ export default function Editor() {
                 onDrag={(e, data) => handleDrag(data, "seeker")}
                 id="seeker"
                 defaultPosition={{ x: minBound, y: 0 }}
-                bounds={{ left: minBound + 10, right: startRightBound - 3 }}
+                bounds={{ left: endLeftBound + 10, right: startRightBound - 3 }}
                 position={{ x: seekerPos, y: 0 }}
             >
                 <div className="seeker" style={{width: 3, margin: 0, padding: 0, backgroundColor: 'gray', border: 0, height: 70}}/>
