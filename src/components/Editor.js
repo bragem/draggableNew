@@ -2,6 +2,8 @@ import Draggable from "react-draggable";
 import { useState, useRef } from "react";
 import ReactPlayer from "react-player";
 const radius = 3;
+// var ffmpeg = require('fluent-ffmpeg');
+// var command = ffmpeg('./video.mp4');
 
 export default function Editor() {
     let maxBound = 640 + radius;
@@ -37,6 +39,12 @@ export default function Editor() {
         changeSeekerPos(x);
     }
 
+    // function edit(){
+    //     command.setStartTime(10)
+    //     command.duration(10)
+    //     command.save('newVideo.mp4')
+    // }
+    // edit();
 
     //lagrer posisjonene relativt i forhold til lengden av diven og legger
     // det til som metadata på videoen når man er ferdig å redigere
