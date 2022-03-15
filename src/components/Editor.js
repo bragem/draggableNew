@@ -15,6 +15,7 @@ export default function Editor() {
     const [seekerPos, changeSeekerPos] = useState(maxBound - radius * 2);
     // const [endPos, changeEndPos] = useState(minBound + radius * 2);
 
+    //TODO make div clcikable, so that the videoRef moves and drags to wherever the mouse clicks in the progressbar
 
     function handleDrag(data, name) {
         if (name === "start") {
@@ -29,7 +30,11 @@ export default function Editor() {
 
         } else if (name === "end") {
             setStartBound(data.x - radius * 2);
+
+        }else if(name === "seeker"){
+            graphsVideoRef.current.seekTo(data.x / maxBound);
         }
+
 
     }
 
@@ -77,7 +82,7 @@ export default function Editor() {
                 defaultPosition={{ x: minBound, y: 0 }}
                 bounds={{ left: minBound, right: startRightBound }}
             >
-                <div className="box" style={{ width: 6, margin: 0, padding: 0, backgroundColor: 'red', border: 0, height: 70 }}></div>
+                <div className="box" style={{width: 6, margin: 0, padding: 0, backgroundColor: 'red', border: 0, height: 70}}/>
             </Draggable>
 
             <Draggable
@@ -88,7 +93,7 @@ export default function Editor() {
                 bounds={{ left: minBound + 10, right: startRightBound - 3 }}
                 position={{ x: seekerPos, y: 0 }}
             >
-                <div className="seeker" style={{ width: 3, margin: 0, padding: 0, backgroundColor: 'gray', border: 0, height: 70 }}></div>
+                <div className="seeker" style={{width: 3, margin: 0, padding: 0, backgroundColor: 'gray', border: 0, height: 70}}/>
             </Draggable>
 
             <Draggable
@@ -98,7 +103,7 @@ export default function Editor() {
                 id="end"
                 bounds={{ left: endLeftBound, right: maxBound - 3 }}
             >
-                <div className="box" style={{ width: 6, margin: 0, padding: 0, backgroundColor: 'red', border: 0, height: 70 }}></div>
+                <div className="box" style={{width: 6, margin: 0, padding: 0, backgroundColor: 'red', border: 0, height: 70}}/>
             </Draggable>
         </div >
 
