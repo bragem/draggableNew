@@ -13,6 +13,7 @@ export default function Editor() {
     const [endLeftBound, setEndBound] = useState(minBound + radius * 2);
     const graphsVideoRef = useRef(null);
     const [seekerPos, changeSeekerPos] = useState(maxBound - radius * 2);
+    const [playedSeconds, updatePlayedSeconds] = useState(0);
     // const [endPos, changeEndPos] = useState(minBound + radius * 2);
 
     //TODO make div clcikable, so that the videoRef moves and drags to wherever the mouse clicks in the progressbar
@@ -31,13 +32,10 @@ export default function Editor() {
         } else if (name === "end") {
             setStartBound(data.x - radius * 2);
 
+        }else if(name === "seeker"){
+            graphsVideoRef.current.seekTo(data.x / maxBound);
+            changeSeekerPos(data.x/maxBound)
         }
-        else if(name === "seeker"){
-            let pos = data.x/maxBound
-            graphsVideoRef.current.seekTo(pos);
-            changeSeekerPos(pos)
-        }
-
 
     }
 
@@ -45,7 +43,15 @@ export default function Editor() {
         let x = state.played * maxBound;
         console.log(x);
         changeSeekerPos(x);
+        updatePlayedSeconds(Math.floor(state.playedSeconds));
     }
+
+    function timeFormat(seconds) {
+        var convert = function(x) { return (x < 10) ? "0"+x : x; }
+        return convert(parseInt(seconds / (60*60))) + ":" +
+               convert(parseInt(seconds / 60 % 60)) + ":" +
+               convert(seconds % 60)
+      }
 
     // function edit(){
     //     command.setStartTime(10)
@@ -67,7 +73,7 @@ export default function Editor() {
 
 
     return (
-        <div style={{ margin: 20 }}>
+        <div style={{ margin: 20, backgroundColor: "blue"}}>
 
 
             <ReactPlayer
@@ -75,9 +81,9 @@ export default function Editor() {
                 url='https://www.youtube.com/watch?v=NKaA0IPcD_Q&ab_channel=IB-PROCADDd.o.o.'
                 controls={true}
                 onProgress={(state) => handleProgress(state)}
+                
 
             />
-
             <Draggable
                 axis="x"
                 onDrag={(e, data) => handleDrag(data, "start")}
@@ -93,10 +99,15 @@ export default function Editor() {
                 onDrag={(e, data) => handleDrag(data, "seeker")}
                 id="seeker"
                 defaultPosition={{ x: minBound, y: 0 }}
-                bounds={{ left: endLeftBound + 10, right: startRightBound - 3 }}
+                bounds={{ left: endLeftBound, right: startRightBound}}
                 position={{ x: seekerPos, y: 0 }}
             >
-                <div className="seeker" style={{width: 3, margin: 0, padding: 0, backgroundColor: 'gray', border: 0, height: 70}}/>
+                <div>
+                    <div className="box" style={{width: 66, margin: 0, left: -66/2 , padding: 0, backgroundColor: "rgba(255, 255, 255, 0.6)", border: 0, height: 20}} >
+                    {timeFormat(playedSeconds)}
+                    </div>
+                    <div className="seeker" style={{width: 3, margin: 0, padding: 0, backgroundColor: 'white', border: 0, height: 70}}/>
+                </div>
             </Draggable>
 
             <Draggable
