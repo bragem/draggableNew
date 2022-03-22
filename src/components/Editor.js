@@ -2,8 +2,9 @@ import Draggable from "react-draggable";
 import { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
 import captureVideoFrame from "capture-video-frame";
-import Myvideo from '../videos/headervid.mp4';
+// import Myvideo from '';
 const radius = 3;
+const Myvideo = null;
 // var ffmpeg = require('fluent-ffmpeg');
 // var command = ffmpeg('./video.mp4');
 
