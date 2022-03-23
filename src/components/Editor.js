@@ -152,7 +152,8 @@ export default function Editor() {
                 onPlay={() => changeVideoPlaying(true)}
 
             />
-            <ClickableDiv id="containerBox" style={{ backgroundColor: "gray", backgroundImage: `url(${frameVid})`, backgroundSize: 120, width: maxBound }} onClick={(event) => {changeSeekerPos(event.pageX); graphsVideoRef.current.seekTo(event.pageX/maxBound);}} >
+            <ClickableDiv id="containerBox" style={{ backgroundColor: "gray", backgroundImage: `url(${frameVid})`, backgroundSize: 120, width: maxBound,  }} onClick={(event) => {changeSeekerPos(event.pageX); graphsVideoRef.current.seekTo((event.pageX - 20)/maxBound);}} >
+                {/* The magic number in the seek to function is the margin in the first div in this return aka 20 */}
                 <Draggable
                     axis="x"
                     onDrag={(e, data) => handleDrag(data, "start")}
