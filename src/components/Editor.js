@@ -2,7 +2,7 @@ import Draggable from "react-draggable";
 import { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
 import captureVideoFrame from "capture-video-frame";
-import Myvideo from '../videos/antarcticbreeze_-_christmas_mood_ _unlimited_use_music_download (360p).mp4';
+import Myvideo from '../videos/bigBuckBunny.mp4';
 import ClickableDiv from 'react-clickable-div'
 const radius = 3;
 // var ffmpeg = require('fluent-ffmpeg');
@@ -92,6 +92,13 @@ export default function Editor() {
         changeSeekerPos(x);
         if (x > startRightBound) {
             changeVideoPlaying(false);
+            changeSeekerPos(startRightBound)
+            graphsVideoRef.current.seekTo(startRightBound / maxBound)
+
+        }
+        else if(x<endLeftBound){
+            changeSeekerPos(endLeftBound)
+            graphsVideoRef.current.seekTo(endLeftBound / maxBound)
         }
 
 
