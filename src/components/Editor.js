@@ -170,7 +170,7 @@ export default function Editor() {
                     defaultPosition={{ x: minBound, y: 0 }}
                     bounds={{ left: minBound, right: startRightBound }}
                 >
-                    <div className="box" style={{ width: 6, margin: 0, padding: 0, backgroundColor: 'red', border: 0, height: 70 }} />
+                    <div className="box" style={{ width: 6, margin: 0, padding: 0, backgroundColor: '#D62E2E', border: 0, height: 70 }} />
                 </Draggable>
 
                 {showSeekerBool &&
@@ -186,7 +186,7 @@ export default function Editor() {
                             <div className="box" style={{ width: 66, margin: 0, left: -66 / 2, padding: 0, backgroundColor: "rgba(255, 255, 255, 0.6)", border: 0, height: 20 }} >
                                 {timeFormat(playedSeconds)}
                             </div>
-                            <div className="seeker" style={{ width: 3, margin: 0, padding: 0, backgroundColor: 'white', border: 0, height: 70 }} />
+                            <div className="seeker" style={{ width: 3, margin: 0, padding: 0, backgroundColor: '#FFFFFF', border: 0, height: 70 }} />
                         </div>
                     </Draggable>
                 }
@@ -200,7 +200,7 @@ export default function Editor() {
                     defaultPosition={{ x: maxBound - 3, y: 0 }}
                     bounds={{ left: endLeftBound, right: maxBound - 3}}
                 >
-                    <div className="box" style={{ width: 6, margin: 0, padding: 0, backgroundColor: 'red', border: 0, height: 70 }} />
+                    <div className="box" style={{ width: 6, margin: 0, padding: 0, backgroundColor: '#D62E2E', border: 0, height: 70 }} />
                 </Draggable>
             </ClickableDiv>
         </div >
