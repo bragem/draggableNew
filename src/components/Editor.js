@@ -4,10 +4,14 @@ import ReactPlayer from "react-player";
 import captureVideoFrame from "capture-video-frame";
 import Myvideo from '../videos/bigBuckBunny.mp4';
 import ClickableDiv from 'react-clickable-div'
+import useWindowSize from "../functions/useWindowSize";
 const radius = 3;
 
 export default function Editor() {
+    let {windowHeight, windowWidth} = useWindowSize()
+
     let maxBound = 640 + radius;
+    // let maxBound = windowWidth;
     let minBound = 0;
 
     const [startRightBound, setStartBound] = useState(maxBound - radius * 2);
@@ -110,8 +114,6 @@ export default function Editor() {
         const frame = captureVideoFrame(graphsVideoRef.current.getInternalPlayer());
 
         setVidFrame(frame.dataUri);
-
-
     }
 
     useEffect(() => {
@@ -121,7 +123,6 @@ export default function Editor() {
     return (
         <div style={{ margin: 20 }}>
 
-
             <ReactPlayer
                 ref={graphsVideoRef}
                 url={Myvideo}
@@ -130,7 +131,6 @@ export default function Editor() {
                 progressInterval={50}
                 playing={videoPlaying}
                 onPlay={() => changeVideoPlaying(true)}
-
             />
             <ClickableDiv id="containerBox" style={{ backgroundColor: "gray", backgroundImage: `url(${frameVid})`, backgroundSize: 120, width: maxBound,  }} onClick={(event) => {changeSeekerPos(event.pageX); graphsVideoRef.current.seekTo((event.pageX - 20)/maxBound);}} >
                 {/* The magic number in the seek to function is the margin in the first div in this return aka 20 */}
@@ -143,7 +143,7 @@ export default function Editor() {
                     defaultPosition={{ x: minBound, y: 0 }}
                     bounds={{ left: minBound, right: startRightBound }}
                 >
-                    <div className="box" style={{ width: 6, margin: 0, padding: 0, backgroundColor: 'red', border: 0, height: 70 }} />
+                    <div className="box" style={{ width: 8, margin: 0, padding: 0, backgroundColor: '#D62E2E', border: 0, height: 70 }} />
                 </Draggable>
 
                 {showSeekerBool &&
@@ -159,7 +159,7 @@ export default function Editor() {
                             <div className="box" style={{ width: 66, margin: 0, left: -66 / 2, padding: 0, backgroundColor: "rgba(255, 255, 255, 0.6)", border: 0, height: 20 }} >
                                 {timeFormat(playedSeconds)}
                             </div>
-                            <div className="seeker" style={{ width: 3, margin: 0, padding: 0, backgroundColor: 'white', border: 0, height: 70 }} />
+                            <div className="seeker" style={{ width: 4, margin: 0, padding: 0, backgroundColor: '#FFFFFF', border: 0, height: 70 }} />
                         </div>
                     </Draggable>
                 }
@@ -173,7 +173,7 @@ export default function Editor() {
                     defaultPosition={{ x: maxBound - 3, y: 0 }}
                     bounds={{ left: endLeftBound, right: maxBound - 3}}
                 >
-                    <div className="box" style={{ width: 6, margin: 0, padding: 0, backgroundColor: 'red', border: 0, height: 70 }} />
+                    <div className="box" style={{ width: 8, margin: 0, padding: 0, backgroundColor: '#D62E2E', border: 0, height: 70 }} />
                 </Draggable>
             </ClickableDiv>
         </div >
