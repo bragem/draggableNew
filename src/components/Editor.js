@@ -2,7 +2,7 @@ import Draggable from "react-draggable";
 import { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
 import captureVideoFrame from "capture-video-frame";
-import Myvideo from '../videos/antarcticbreeze_-_christmas_mood_ _unlimited_use_music_download (360p).mp4';
+import Myvideo from '../videos/bigBuckBunny.mp4';
 import ClickableDiv from 'react-clickable-div'
 const radius = 3;
 // var ffmpeg = require('fluent-ffmpeg');
@@ -92,6 +92,13 @@ export default function Editor() {
         changeSeekerPos(x);
         if (x > startRightBound) {
             changeVideoPlaying(false);
+            changeSeekerPos(startRightBound)
+            graphsVideoRef.current.seekTo(startRightBound / maxBound)
+
+        }
+        else if(x<endLeftBound){
+            changeSeekerPos(endLeftBound)
+            graphsVideoRef.current.seekTo(endLeftBound / maxBound)
         }
 
 
@@ -152,52 +159,50 @@ export default function Editor() {
                 onPlay={() => changeVideoPlaying(true)}
 
             />
-                <ClickableDiv id="containerBox" style={{ backgroundColor: "gray", backgroundImage: `url(${frameVid})`, backgroundSize: 120, width: maxBound }} onClick={(event) => {changeSeekerPos(event.pageX); graphsVideoRef.current.seekTo((event.pageX - 20)/maxBound);}} >
-                    {/* The magic number in the seek to function is the margin in the first div in this return aka 20 */}
-                    <div className="box" style={{backgroundColor: "rgba(255, 255, 255, 0.5)", border: 0, left: startRightBound + 25, height: 70, width: maxBound - startRightBound -6, margin: 0, padding: 0}} ></div>        
-                    <div className="box" style={{backgroundColor: "rgba(255, 255, 255, 0.5)", border: 0, left: minBound + 20, height: 70, width: endLeftBound - minBound, margin: 0, padding: 0}} ></div>        
+            <ClickableDiv id="containerBox" style={{ backgroundColor: "gray", backgroundImage: `url(${frameVid})`, backgroundSize: 120, width: maxBound,  }} onClick={(event) => {changeSeekerPos(event.pageX); graphsVideoRef.current.seekTo((event.pageX - 20)/maxBound);}} >
+                {/* The magic number in the seek to function is the margin in the first div in this return aka 20 */}
+                <Draggable
+                    axis="x"
+                    onDrag={(e, data) => handleDrag(data, "start")}
+                    onStart={() => hideSeeker()}
+                    onStop={() => showSeeker()}
+                    id="start"
+                    defaultPosition={{ x: minBound, y: 0 }}
+                    bounds={{ left: minBound, right: startRightBound }}
+                >
+                    <div className="box" style={{ width: 6, margin: 0, padding: 0, backgroundColor: 'red', border: 0, height: 70 }} />
+                </Draggable>
+
+                {showSeekerBool &&
                     <Draggable
                         axis="x"
-                        onDrag={(e, data) => handleDrag(data, "start")}
-                        onStart={() => hideSeeker()}
-                        onStop={() => showSeeker()}
-                        id="start"
+                        onDrag={(e, data) => handleDrag(data, "seeker")}
+                        id="seeker"
                         defaultPosition={{ x: minBound, y: 0 }}
-                        bounds={{ left: minBound, right: startRightBound }}
+                        bounds={{ left: endLeftBound, right: startRightBound}}
+                        position={{ x: seekerPos, y: 0 }}
                     >
-                        <div className="box" style={{ width: 6, margin: 0, padding: 0, backgroundColor: 'red', border: 0, height: 70 }} />
-                    </Draggable>
-
-                    {showSeekerBool &&
-                        <Draggable
-                            axis="x"
-                            onDrag={(e, data) => handleDrag(data, "seeker")}
-                            id="seeker"
-                            defaultPosition={{ x: minBound, y: 0 }}
-                            bounds={{ left: endLeftBound, right: startRightBound}}
-                            position={{ x: seekerPos, y: 0 }}
-                        >
-                            <div>
-                                <div className="box" style={{ width: 66, margin: 0, left: -66 / 2, padding: 0, backgroundColor: "rgba(255, 255, 255, 0.6)", border: 0, height: 20 }} >
-                                    {timeFormat(playedSeconds)}
-                                </div>
-                                <div className="seeker" style={{ width: 3, margin: 0, padding: 0, backgroundColor: 'white', border: 0, height: 70 }} />
+                        <div>
+                            <div className="box" style={{ width: 66, margin: 0, left: -66 / 2, padding: 0, backgroundColor: "rgba(255, 255, 255, 0.6)", border: 0, height: 20 }} >
+                                {timeFormat(playedSeconds)}
                             </div>
-                        </Draggable>
-                    }
+                            <div className="seeker" style={{ width: 3, margin: 0, padding: 0, backgroundColor: 'white', border: 0, height: 70 }} />
+                        </div>
+                    </Draggable>
+                }
 
-                        <Draggable
-                            axis="x"
-                            onDrag={(e, data) => handleDrag(data, "end")}
-                            onStart={() => hideSeeker("end")}
-                            onStop={(data) => showSeeker(data, "end")}
-                            id="end"
-                            defaultPosition={{ x: maxBound - 3, y: 0 }}
-                            bounds={{ left: endLeftBound, right: maxBound - 3}}
-                        >
-                            <div className="box" style={{ width: 6, margin: 0, padding: 0, backgroundColor: 'red', border: 0, height: 70 }} />
-                        </Draggable>
-                </ClickableDiv>
+                <Draggable
+                    axis="x"
+                    onDrag={(e, data) => handleDrag(data, "end")}
+                    onStart={() => hideSeeker("end")}
+                    onStop={(data) => showSeeker(data, "end")}
+                    id="end"
+                    defaultPosition={{ x: maxBound - 3, y: 0 }}
+                    bounds={{ left: endLeftBound, right: maxBound - 3}}
+                >
+                    <div className="box" style={{ width: 6, margin: 0, padding: 0, backgroundColor: 'red', border: 0, height: 70 }} />
+                </Draggable>
+            </ClickableDiv>
         </div >
 
 
