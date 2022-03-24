@@ -2,7 +2,7 @@ import Draggable from "react-draggable";
 import { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
 import captureVideoFrame from "capture-video-frame";
-import Myvideo from '../videos/bigBuckBunny.mp4';
+import Myvideo from '../videos/Blue_Sky_and_Clouds_Timelapse_0892__Videvo.mov';
 import ClickableDiv from 'react-clickable-div'
 const radius = 3;
 // var ffmpeg = require('fluent-ffmpeg');
@@ -161,6 +161,8 @@ export default function Editor() {
             />
             <ClickableDiv id="containerBox" style={{ backgroundColor: "gray", backgroundImage: `url(${frameVid})`, backgroundSize: 120, width: maxBound,  }} onClick={(event) => {changeSeekerPos(event.pageX); graphsVideoRef.current.seekTo((event.pageX - 20)/maxBound);}} >
                 {/* The magic number in the seek to function is the margin in the first div in this return aka 20 */}
+                <div className="box" style={{backgroundColor: "rgba(255, 255, 255, 0.5)", border: 0, left: startRightBound + 25, height: 70, width: maxBound - startRightBound -6, margin: 0, padding: 0}} ></div>        
+                <div className="box" style={{backgroundColor: "rgba(255, 255, 255, 0.5)", border: 0, left: minBound + 20, height: 70, width: endLeftBound - minBound, margin: 0, padding: 0}} ></div>
                 <Draggable
                     axis="x"
                     onDrag={(e, data) => handleDrag(data, "start")}
