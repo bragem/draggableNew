@@ -5,8 +5,6 @@ import captureVideoFrame from "capture-video-frame";
 import Myvideo from '../videos/bigBuckBunny.mp4';
 import ClickableDiv from 'react-clickable-div'
 const radius = 3;
-// var ffmpeg = require('fluent-ffmpeg');
-// var command = ffmpeg('./antarcticbreeze_-_christmas_mood_ _unlimited_use_music_download (360p).mp4');
 
 export default function Editor() {
     let maxBound = 640 + radius;
@@ -22,9 +20,6 @@ export default function Editor() {
     const [frameVid, setVidFrame] = useState(null);
 
     const [playedSeconds, updatePlayedSeconds] = useState(0);
-    // const [endPos, changeEndPos] = useState(minBound + radius * 2);
-
-    //TODO make div clcikable, so that the videoRef moves and drags to wherever the mouse clicks in the progressbar
 
     function handleDrag(data, name) {
         if (name === "start") {
@@ -48,10 +43,7 @@ export default function Editor() {
             changeSeekerPos(pos)
             graphsVideoRef.current.seekTo(pos);
             changeVideoPlaying(true);
-
         }
-
-
     }
 
     function hideSeeker(trimmer) {
@@ -112,24 +104,6 @@ export default function Editor() {
             convert(seconds % 60)
     }
 
-    // function edit(){
-    //     command.setStartTime(10)
-    //     command.duration(10)
-    //     command.save('newVideo.mp4')
-    // }
-    // edit();
-
-    //lagrer posisjonene relativt i forhold til lengden av diven og legger
-    // det til som metadata på videoen når man er ferdig å redigere
-
-    // const saveVideo = () => {
-    //     var metadata = {
-    //         "trim_times": this.state.timings,
-    //         "mute": this.state.isMuted
-    //     }
-    //     this.props.saveVideo(metadata)
-    // }
-
     function generateFrame() {
         // console.log(graphsVideoRef.current.getInternalPlayer());
         changeVideoPlaying(true);
@@ -139,7 +113,6 @@ export default function Editor() {
 
 
     }
-
 
     useEffect(() => {
         generateFrame();
