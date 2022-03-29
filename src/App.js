@@ -10,8 +10,6 @@ function App() {
 
       <div id="wrapper">
         <Editor
-        axis="x"
-        defaultPosition={{x: 550, y: 400}}
         >
         </Editor>
       </div>
