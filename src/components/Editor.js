@@ -6,6 +6,9 @@ import Myvideo from '../videos/Big_Buck_Bunny_1080_10s_30MB.mp4';
 import ClickableDiv from 'react-clickable-div'
 const radius = 3;
 
+//TODO hele komponenten må være responsiv og pen på mobil, er kun det det skal lages til, ikke web.
+
+
 
 export default function Editor() {
     let maxBound = 640 + radius;
