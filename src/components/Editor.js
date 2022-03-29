@@ -112,12 +112,9 @@ export default function Editor() {
         setVidFrame(frame.dataUri);
     }
 
-    function videolength() {
-        return graphsVideoRef.current.getDuration()
-    }
-
     function cliptime() {
         // onClick the next next-button, this function is called
+        var length = graphsVideoRef.current.getDuration()
         var left=videolength()*(endLeftBound - minBound)/ maxBound
         var right=videolength()*(1 - (maxBound - startRightBound)/maxBound)
         return [left, right]
