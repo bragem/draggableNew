@@ -2,11 +2,12 @@ import Draggable from "react-draggable";
 import { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
 import captureVideoFrame from "capture-video-frame";
-// import Myvideo from '';
+import Myvideo from '../videos/headervid.mp4';
+import ClickableDiv from 'react-clickable-div'
 const radius = 3;
-const Myvideo = null;
+// const Myvideo = null;
 // var ffmpeg = require('fluent-ffmpeg');
-// var command = ffmpeg('./video.mp4');
+// var command = ffmpeg('./antarcticbreeze_-_christmas_mood_ _unlimited_use_music_download (360p).mp4');
 
 export default function Editor() {
     let maxBound = 640 + radius;
@@ -32,7 +33,6 @@ export default function Editor() {
             graphsVideoRef.current.seekTo(data.x / maxBound);
             setEndBound(data.x + radius * 2);
             changeVideoPlaying(true);
-
 
         } else if (name === "end") {
             changeSeekerPos(data.x + radius * 2);
@@ -153,7 +153,7 @@ export default function Editor() {
                 onPlay={() => changeVideoPlaying(true)}
 
             />
-            <div id="containerBox" style={{ backgroundColor: "gray", backgroundImage: `url(${frameVid})`, backgroundSize: 120, width: maxBound }}>
+            <ClickableDiv id="containerBox" style={{ backgroundColor: "gray", backgroundImage: `url(${frameVid})`, backgroundSize: 120, width: maxBound }} onClick={(event) => { changeSeekerPos(event.pageX); graphsVideoRef.current.seekTo(event.pageX / maxBound); }} >
                 <Draggable
                     axis="x"
                     onDrag={(e, data) => handleDrag(data, "start")}
@@ -172,7 +172,7 @@ export default function Editor() {
                         onDrag={(e, data) => handleDrag(data, "seeker")}
                         id="seeker"
                         defaultPosition={{ x: minBound, y: 0 }}
-                        bounds={{ left: endLeftBound + 10, right: startRightBound - 3 }}
+                        bounds={{ left: endLeftBound, right: startRightBound }}
                         position={{ x: seekerPos, y: 0 }}
                     >
                         <div>
@@ -195,7 +195,7 @@ export default function Editor() {
                 >
                     <div className="box" style={{ width: 6, margin: 0, padding: 0, backgroundColor: 'red', border: 0, height: 70 }} />
                 </Draggable>
-            </div>
+            </ClickableDiv>
         </div >
 
 
