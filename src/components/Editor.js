@@ -2,7 +2,7 @@ import Draggable from "react-draggable";
 import { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
 import captureVideoFrame from "capture-video-frame";
-import Myvideo from '../videos/bigBuckBunny.mp4';
+import Myvideo from '../videos/Big_Buck_Bunny_1080_10s_30MB.mp4';
 import ClickableDiv from 'react-clickable-div'
 const radius = 3;
 
@@ -109,6 +109,16 @@ export default function Editor() {
         setVidFrame(frame.dataUri);
     }
 
+    function videolength() {
+        return graphsVideoRef.current.getDuration()
+    }
+
+    function cliptime() {
+        // onClick the next next-button, this function is called
+        var left=videolength()*(endLeftBound - minBound)/ maxBound
+        var right=videolength()*(1 - (maxBound - startRightBound)/maxBound)
+        return [left, right]
+    }
 
     useEffect(() => {
         generateFrame();
