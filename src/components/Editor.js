@@ -138,7 +138,7 @@ export default function Editor() {
                     position={{ x: seekerPos, y: 0 }}
                 >
                     <div>
-                        <div className="box" style={{ width: 66, margin: 0, left: -66 / 2, padding: 0, backgroundColor: "rgba(255, 255, 255, 0.6)", border: 0, height: 20 }} >
+                        <div className="box" style={{ width: 66, margin: 0, left: -66 / 2, padding: 0, backgroundColor: "rgba(185, 185, 185, 0.85)", border: 0, height: 20 }} >
                             {timeFormat(playedSeconds)}
                         </div>
                         <div className="seeker" style={{ width: 3, margin: 0, padding: 0, backgroundColor: '#FFFFFF', border: 0, height: 70 }} />
@@ -147,10 +147,10 @@ export default function Editor() {
 
                 <div style={{ marginTop: -70 }}>
                     {/* Left bound */}
-                    <div className="box" style={{backgroundColor: "rgba(255, 255, 255, 0.5)", border: 0, left: minBound, height: 70, width: endLeftBound - minBound, margin: 0, padding: 0}} ></div>
+                    <div className="box" style={{backgroundColor: "rgba(255, 255, 255, 0.7)", border: 0, left: minBound, height: 70, width: endLeftBound - minBound, margin: 0, padding: 0}} ></div>
                     
                     {/* Right bound */}
-                    <div className="box" style={{backgroundColor: "rgba(255, 255, 255, 0.5)", border: 0, left: startRightBound + 6, height: 70, width: maxBound - startRightBound, margin: 0, padding: 0}} ></div>        
+                    <div className="box" style={{backgroundColor: "rgba(255, 255, 255, 0.7)", border: 0, left: startRightBound + 6, height: 70, width: maxBound - startRightBound, margin: 0, padding: 0}} ></div>        
 
                     <Draggable
                         axis="x"
