@@ -4,7 +4,8 @@ import ReactPlayer from "react-player";
 import captureVideoFrame from "capture-video-frame";
 import Myvideo from '../videos/bigBuckBunny.mp4';
 import ClickableDiv from 'react-clickable-div'
-const radius = 3;
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+const radius = 4;
 
 //TODO hele komponenten må være responsiv og pen på mobil, er kun det det skal lages til, ikke web.
 
@@ -13,7 +14,11 @@ export default function Editor() {
     // let maxBound = 640 + radius;
     let minBound = 0;
 
-    const [maxBound, setMaxBound] = useState(0);
+
+    const [width, setWidth] = useState(window.innerWidth);
+    const [height, setHeight] = useState(window.innerHeight);
+
+    const [maxBound, setMaxBound] = useState(width - radius);
 
     const [startRightBound, setStartBound] = useState(0);
     const [endLeftBound, setEndBound] = useState(0);
@@ -26,8 +31,6 @@ export default function Editor() {
     const [playedSeconds, updatePlayedSeconds] = useState(0);
 
 
-    const [width, setWidth] = useState(window.innerWidth);
-    const [height, setHeight] = useState(window.innerHeight);
 
     const updateDimensions = () => {
         setWidth(window.innerWidth);
@@ -130,17 +133,19 @@ export default function Editor() {
 
     function back() {
         console.log("back")
+        // Cancel analysis
     }
 
     function pause() {
         console.log("pause")
+        changeVideoPlaying(!videoPlaying)
     }
 
     function next() {
         console.log("next")
+        console.log(cliptime)
+        // Go to the next screen
     }
-
-
 
     useEffect(() => {
         window.addEventListener("resize", updateDimensions);
@@ -149,16 +154,16 @@ export default function Editor() {
 
     useEffect(() => {
         generateFrame();
-        console.log(width, height)
+        // console.log(width, height)
         setMaxBound(width - radius)
-        setStartBound(maxBound - radius * 2)
+        setStartBound(maxBound - radius)
         setEndBound(0)
-        changeSeekerPos(maxBound - radius * 2)
+        changeSeekerPos(maxBound - radius)
         console.log(maxBound)
     }, []);
 
     return (
-        <div id="container" className="flex flex-col h-full">
+        <div id="container" className="flex flex-col h-full overflow-hidden">
             <div style={{ margin: 0, width: '100%', height: height - 120, alignContent: "center", backgroundColor: '#000' }
             }>
 
@@ -184,7 +189,7 @@ export default function Editor() {
                         position={{ x: seekerPos, y: 0 }}
                     >
                         <div>
-                            <div className="box" style={{ width: 66, margin: 0, left: -66 / 2, padding: 0, backgroundColor: "rgba(185, 185, 185, 0.85)", border: 0, height: 20 }} >
+                            <div className="box" style={{ width: 66, margin: 0, position: 'absolute', left: -66 / 2, padding: 0, backgroundColor: "rgba(185, 185, 185, 0.85)", border: 0, height: 20 }} >
                                 {timeFormat(playedSeconds)}
                             </div>
                             <div className="seeker" style={{ width: 3, margin: 0, padding: 0, backgroundColor: '#FFFFFF', border: 0, height: 70 }} />
@@ -193,10 +198,10 @@ export default function Editor() {
 
                     <div style={{ marginTop: -70 }}>
                         {/* Left bound */}
-                        <div className="box" style={{ backgroundColor: "rgba(255, 255, 255, 0.7)", border: 0, left: minBound, height: 70, width: endLeftBound - minBound, margin: 0, padding: 0 }} ></div>
+                        <div className="boxL" style={{ backgroundColor: "rgba(255, 255, 255, 0.7)", border: 0, left: minBound, height: 70, width: endLeftBound - minBound, margin: 0, padding: 0 }} ></div>
 
                         {/* Right bound */}
-                        <div className="box" style={{ backgroundColor: "rgba(255, 255, 255, 0.7)", border: 0, left: startRightBound + 6, height: 70, width: maxBound - startRightBound, margin: 0, padding: 0 }} ></div>
+                        <div className="boxR" style={{ backgroundColor: "rgba(255, 255, 255, 0.7)", border: 0, left: startRightBound + 6, height: 70, width: maxBound - startRightBound, margin: 0, padding: 0 }} ></div>
 
                         <Draggable
                             axis="x"
@@ -207,26 +212,25 @@ export default function Editor() {
                             defaultPosition={{ x: minBound, y: 0 }}
                             bounds={{ left: minBound, right: startRightBound }}
                         >
-                            <div className="box" style={{ width: 8, margin: 0, padding: 0, backgroundColor: '#D62E2E', border: 0, height: 70 }} />
+                            <div className="boxL rounded-l-lg" style={{ width: 8, margin: 0, padding: 0, backgroundColor: '#D62E2E', border: 0, height: 70, }} ><ArrowBackIosIcon style={{ maxWidth: 8, color: 'white' }} /></div>
                         </Draggable>
                         <Draggable
                             axis="x"
                             onDrag={(e, data) => handleDrag(data, "end")}
                             onStart={() => hideSeeker("end")}
-                            onStop={(data) => showSeeker(data, "end")}
                             id="end"
                             defaultPosition={{ x: maxBound - 3, y: 0 }}
                             bounds={{ left: endLeftBound, right: maxBound - 3 }}
                         >
-                            <div className="box" style={{ width: 8, padding: 0, backgroundColor: '#D62E2E', border: 0, height: 70 }} />
+                            <div className="boxR rounded-r-lg" style={{ width: 8, margin: 0, padding: 0, backgroundColor: '#D62E2E', border: 0, height: 70 }} />
                         </Draggable>
                     </div>
                 </ClickableDiv>
 
             </div >
-            <div className="flex justify-between w-full" style={{ position: "absolute", bottom: 0 }}>
+            <div style={{ display: 'flex', position: "absolute", bottom: 0, width: '100%', justifyContent: 'space-between' }}>
                 <button onClick={back}>back</button>
-                <button onClick={pause}>Pause</button>
+                <button onClick={pause}>pause</button>
                 <button onClick={next}>Next</button>
             </div>
         </div>

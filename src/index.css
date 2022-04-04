@@ -12,16 +12,22 @@ code {
     monospace;
 }
 
-.box {
+.boxL {
   position: absolute;
   cursor: move;
   color: black;
   /*max-width: 215px;*/
-  border-radius: 5px;
-  padding: 1em;
-  margin: auto;
+  border-radius: 5px 0 0 5px;
   user-select: none;
-  border: solid 5px black;
-  width:30px;
-  height:30px;
 }
+
+.boxR {
+  position: absolute;
+  cursor: move;
+  color: black;
+  /*max-width: 215px;*/
+  border-radius: 0 5px 5px 0;
+  user-select: none;
+}
+
+
