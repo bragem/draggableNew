@@ -2,9 +2,13 @@ import Draggable from "react-draggable";
 import { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
 import captureVideoFrame from "capture-video-frame";
-import Myvideo from '../videos/bigBuckBunny.mp4';
+import Myvideo from '../videos/musikk.mp4';
 import ClickableDiv from 'react-clickable-div'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import { BiArrowBack } from 'react-icons/bi'
+import { GiPauseButton, GiPlayButton } from 'react-icons/gi'
+import { MdArrowBackIos, MdArrowForwardIos } from 'react-icons/md'
+
 const radius = 4;
 
 //TODO hele komponenten må være responsiv og pen på mobil, er kun det det skal lages til, ikke web.
@@ -46,8 +50,8 @@ export default function Editor() {
             changeVideoPlaying(true);
 
         } else if (name === "end") {
-            changeSeekerPos(data.x + radius * 2);
-            graphsVideoRef.current.seekTo(data.x / maxBound);
+            changeSeekerPos(data.x);
+            graphsVideoRef.current.seekTo(seekerPos / maxBound);
             setStartBound(data.x - radius * 2);
             changeVideoPlaying(true);
 
@@ -143,7 +147,7 @@ export default function Editor() {
 
     function next() {
         console.log("next")
-        console.log(cliptime)
+        console.log(cliptime())
         // Go to the next screen
     }
 
@@ -160,11 +164,10 @@ export default function Editor() {
         setEndBound(0)
         changeSeekerPos(maxBound - radius)
         console.log(maxBound)
-    }, []);
-
+    }, [1]);
     return (
         <div id="container" className="flex flex-col h-full overflow-hidden">
-            <div style={{ margin: 0, width: '100%', height: height - 120, alignContent: "center", backgroundColor: '#000' }
+            <div style={{ margin: 0, width: '100%', height: height - 120, alignContent: "center", backgroundColor: '#000', maxHeight: height, maxWidth: width }
             }>
 
                 <ReactPlayer
@@ -172,7 +175,7 @@ export default function Editor() {
                     url={Myvideo}
                     controls={true}
                     onProgress={(state) => handleProgress(state)}
-                    progressInterval={50}
+                    progressInterval={10}
                     playing={videoPlaying}
                     onPlay={() => changeVideoPlaying(true)}
                     width={'100%'}
@@ -188,12 +191,14 @@ export default function Editor() {
                         bounds={{ left: endLeftBound, right: startRightBound }}
                         position={{ x: seekerPos, y: 0 }}
                     >
-                        <div>
-                            <div className="box" style={{ width: 66, margin: 0, position: 'absolute', left: -66 / 2, padding: 0, backgroundColor: "rgba(185, 185, 185, 0.85)", border: 0, height: 20 }} >
-                                {timeFormat(playedSeconds)}
-                            </div>
-                            <div className="seeker" style={{ width: 3, margin: 0, padding: 0, backgroundColor: '#FFFFFF', border: 0, height: 70 }} />
-                        </div>
+                        {
+                            (<div>
+                                <div className="box" style={{ width: 66, margin: 0, position: 'absolute', left: -66 / 2, padding: 0, backgroundColor: "rgba(185, 185, 185, 0.85)", border: 0, height: 20 }} >
+                                    {timeFormat(playedSeconds)}
+                                </div>
+                                <div className="seeker" style={{ width: 3, margin: 0, padding: 0, backgroundColor: '#FFFFFF', border: 0, height: 70 }} />
+                            </div>)
+                        }
                     </Draggable>
 
                     <div style={{ marginTop: -70 }}>
@@ -212,7 +217,7 @@ export default function Editor() {
                             defaultPosition={{ x: minBound, y: 0 }}
                             bounds={{ left: minBound, right: startRightBound }}
                         >
-                            <div className="boxL rounded-l-lg" style={{ width: 8, margin: 0, padding: 0, backgroundColor: '#D62E2E', border: 0, height: 70, }} ><ArrowBackIosIcon style={{ maxWidth: 8, color: 'white' }} /></div>
+                            <div className="boxL rounded-l-lg" style={{ width: 10, margin: 0, padding: 0, backgroundColor: '#D62E2E', border: 0, height: 70, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#FFFFFF' }} ><MdArrowBackIos size={14} /></div>
                         </Draggable>
                         <Draggable
                             axis="x"
@@ -222,18 +227,20 @@ export default function Editor() {
                             defaultPosition={{ x: maxBound - 3, y: 0 }}
                             bounds={{ left: endLeftBound, right: maxBound - 3 }}
                         >
-                            <div className="boxR rounded-r-lg" style={{ width: 8, margin: 0, padding: 0, backgroundColor: '#D62E2E', border: 0, height: 70 }} />
+                            <div className="boxR rounded-r-lg" style={{ width: 10, margin: 0, padding: 0, backgroundColor: '#D62E2E', border: 0, height: 70, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#FFFFFF', }} ><MdArrowForwardIos size={14} /></div>
                         </Draggable>
                     </div>
                 </ClickableDiv>
 
             </div >
-            <div style={{ display: 'flex', position: "absolute", bottom: 0, width: '100%', justifyContent: 'space-between' }}>
-                <button onClick={back}>back</button>
-                <button onClick={pause}>pause</button>
-                <button onClick={next}>Next</button>
-            </div>
-        </div>
+            <div style={{ display: 'flex', position: "absolute", bottom: 0, width: '100%', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5, marginTop: 5 }}>
+                <div className="" onClick={back} style={{ padding: 10, marginLeft: 20, marginRight: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', fontSize: 18 }}><BiArrowBack size={18} style={{ marginRight: 5 }} />  Back</div>
+                <div className="" onClick={pause} style={{ height: 'auto' }}> {videoPlaying
+                    ? <GiPauseButton size={20} style={{ height: 'auto' }} />
+                    : <GiPlayButton size={20} style={{ height: 'auto' }} />}</div>
+                <div onClick={next} style={{ backgroundColor: "#131312", color: "#FFFFFF", padding: 10, borderRadius: 25, marginRight: 20, marginLeft: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: 13, paddingRight: 13, fontSize: 18 }}>Next <BiArrowBack size={18} style={{ transform: 'scaleX(-1)', marginLeft: 5 }} /></div>
+            </div >
+        </div >
     )
 }
 

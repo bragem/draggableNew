@@ -19,6 +19,8 @@ code {
   /*max-width: 215px;*/
   border-radius: 5px 0 0 5px;
   user-select: none;
+  margin: 0;
+  padding: 0;
 }
 
 .boxR {
@@ -28,6 +30,6 @@ code {
   /*max-width: 215px;*/
   border-radius: 0 5px 5px 0;
   user-select: none;
+  margin: 0;
+  padding: 0;
 }
-
-
