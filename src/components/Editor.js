@@ -2,7 +2,7 @@ import Draggable from "react-draggable";
 import { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
 import captureVideoFrame from "capture-video-frame";
-import Myvideo from '../videos/musikk.mp4';
+import Myvideo from '../videos/bigBuckBunny.mp4';
 import ClickableDiv from 'react-clickable-div'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { BiArrowBack } from 'react-icons/bi'
@@ -238,7 +238,7 @@ export default function Editor() {
                 <div className="" onClick={pause} style={{ height: 'auto' }}> {videoPlaying
                     ? <GiPauseButton size={20} style={{ height: 'auto' }} />
                     : <GiPlayButton size={20} style={{ height: 'auto' }} />}</div>
-                <div onClick={next} style={{ backgroundColor: "#131312", color: "#FFFFFF", padding: 10, borderRadius: 25, marginRight: 20, marginLeft: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: 13, paddingRight: 13, fontSize: 18 }}>Next <BiArrowBack size={18} style={{ transform: 'scaleX(-1)', marginLeft: 5 }} /></div>
+                <div onClick={next} style={{ backgroundColor: "#131312", color: "#FFFFFF", padding: 10, borderRadius: 25, marginRight: 20, marginLeft: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: 13, paddingRight: 13, fontSize: 18, height: 0 }}>Next <BiArrowBack size={18} style={{ transform: 'scaleX(-1)', marginLeft: 5 }} /></div>
             </div >
         </div >
     )
