@@ -43,7 +43,7 @@ export default function Editor() {
 
     }
 
-    function handleDrag(data, name) {
+    function handleDrag(data, name, state) {
         if (name === "start") {
             changeSeekerPos(data.x + radius * 2);
             graphsVideoRef.current.seekTo(data.x / maxBound);
@@ -95,6 +95,8 @@ export default function Editor() {
 
     function handleProgress(state) {
         let x = state.played * maxBound;
+        var length = graphsVideoRef.current.getDuration()
+        var right = length * (1 - (maxBound - startRightBound) / maxBound)
         changeSeekerPos(x);
         if (x > startRightBound) {
             changeVideoPlaying(false);
@@ -107,6 +109,12 @@ export default function Editor() {
             graphsVideoRef.current.seekTo(endLeftBound / maxBound)
         }
 
+        if (state.playedSeconds == right) {
+            console.log('hei')
+            changeSeekerPos(startRightBound)
+            graphsVideoRef.current.seekTo(endLeftBound / maxBound)
+            changeVideoPlaying(true)
+        }
 
         updatePlayedSeconds(Math.floor(state.playedSeconds));
     }
