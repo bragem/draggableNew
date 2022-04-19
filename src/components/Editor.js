@@ -43,7 +43,7 @@ export default function Editor() {
 
     }
 
-    function handleDrag(data, name, state) {
+    function handleDrag(data, name) {
         if (name === "start") {
             changeSeekerPos(data.x + radius * 2);
             graphsVideoRef.current.seekTo(data.x / maxBound);
@@ -110,7 +110,6 @@ export default function Editor() {
         }
 
         if (state.playedSeconds == right) {
-            console.log('hei')
             changeSeekerPos(startRightBound)
             graphsVideoRef.current.seekTo(endLeftBound / maxBound)
             changeVideoPlaying(true)
@@ -130,7 +129,6 @@ export default function Editor() {
     function generateFrame() {
         changeVideoPlaying(true);
         const frame = captureVideoFrame(graphsVideoRef.current.getInternalPlayer());
-
         setVidFrame(frame.dataUri);
     }
 
@@ -164,6 +162,11 @@ export default function Editor() {
     }, []);
 
     useEffect(() => {
+        // for (i=0; i < 10; i++)
+        // {
+        //     generateFrame();
+        // }
+        generateFrame();
         generateFrame();
         // console.log(width, height)
         console.log(maxBound, startRightBound, endLeftBound, seekerPos)
