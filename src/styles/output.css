@@ -465,9 +465,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .flex-col {
   flex-direction: column;
 }
-.overflow-hidden {
-  overflow: hidden;
-}
 .rounded-l-lg {
   border-top-left-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;

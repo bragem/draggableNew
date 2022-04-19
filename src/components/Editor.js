@@ -2,7 +2,7 @@ import Draggable from "react-draggable";
 import { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
 import captureVideoFrame from "capture-video-frame";
-import Myvideo from '../videos/musikk.mp4';
+import Myvideo from '../videos/bigBuckBunny.mp4';
 import ClickableDiv from 'react-clickable-div'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { BiArrowBack } from 'react-icons/bi'
@@ -24,13 +24,14 @@ export default function Editor() {
 
     const [maxBound, setMaxBound] = useState(width - radius);
 
-    const [startRightBound, setStartBound] = useState(0);
+    const [startRightBound, setStartBound] = useState(maxBound - radius);
     const [endLeftBound, setEndBound] = useState(0);
     const graphsVideoRef = useRef(null);
     const [seekerPos, changeSeekerPos] = useState(0);
     const [videoPlaying, changeVideoPlaying] = useState(false);
     const [tmpSeekPos, changeTmpSeekPos] = useState(null);
     const [frameVid, setVidFrame] = useState(null);
+    const [rightEnd, setRightEnd] = useState(width)
 
     const [playedSeconds, updatePlayedSeconds] = useState(0);
 
@@ -83,9 +84,7 @@ export default function Editor() {
                 } else {
                     changeSeekerPos(tmpSeekPos);
                     graphsVideoRef.current.seekTo(tmpSeekPos / maxBound);
-
                 }
-
             }
         } else if (trimmer === "start") {
             changeSeekerPos(startRightBound);
@@ -101,7 +100,7 @@ export default function Editor() {
             changeVideoPlaying(false);
             changeSeekerPos(startRightBound)
             graphsVideoRef.current.seekTo(startRightBound / maxBound)
-
+            
         }
         else if (x < endLeftBound) {
             changeSeekerPos(endLeftBound)
@@ -159,14 +158,15 @@ export default function Editor() {
     useEffect(() => {
         generateFrame();
         // console.log(width, height)
-        setMaxBound(width - radius)
-        setStartBound(maxBound - radius)
-        setEndBound(0)
-        changeSeekerPos(maxBound - radius)
-        console.log(maxBound)
-    }, [1]);
+        console.log(maxBound, startRightBound, endLeftBound, seekerPos)
+        setMaxBound(width - radius * 2)
+        setEndBound(radius * 2)
+        changeSeekerPos(minBound)
+        console.log(maxBound, startRightBound, endLeftBound, seekerPos)
+        console.log(rightEnd)
+    }, []);
     return (
-        <div id="container" className="flex flex-col h-full overflow-hidden">
+        <div id="container" className="flex flex-col h-full" >
             <div style={{ margin: 0, width: '100%', height: height - 120, alignContent: "center", backgroundColor: '#000', maxHeight: height, maxWidth: width }
             }>
 
@@ -174,39 +174,38 @@ export default function Editor() {
                     ref={graphsVideoRef}
                     url={Myvideo}
                     controls={true}
+                    progressInterval={0}
                     onProgress={(state) => handleProgress(state)}
-                    progressInterval={10}
+
                     playing={videoPlaying}
                     onPlay={() => changeVideoPlaying(true)}
                     width={'100%'}
                     height={'100%'}
                 />
-                <ClickableDiv className="md:w-32" id="containerBox" style={{ position: 'relative', backgroundColor: "gray", backgroundImage: `url(${frameVid})`, backgroundSize: 120, width: maxBound, }} onClick={(event) => { changeSeekerPos(event.pageX); graphsVideoRef.current.seekTo((event.pageX - 20) / maxBound); }} >
+                <ClickableDiv className="md:w-32" id="containerBox" style={{ position: 'relative', backgroundColor: "gray", backgroundImage: `url(${frameVid})`, backgroundSize: 120, width: maxBound - radius * 2, marginLeft: 'auto', marginRight: 'auto', maxWidth: maxBound - radius * 2 }} onClick={(event) => { changeSeekerPos(event.pageX); graphsVideoRef.current.seekTo((event.pageX - 20) / maxBound); }} >
                     {/* The magic number in the seek to function is the margin in the first div in this return aka 20 */}
                     <Draggable
                         axis="x"
                         onDrag={(e, data) => handleDrag(data, "seeker")}
                         id="seeker"
                         defaultPosition={{ x: minBound, y: 0 }}
-                        bounds={{ left: endLeftBound, right: startRightBound }}
+                        bounds={{ left: endLeftBound, right: startRightBound - radius }}
                         position={{ x: seekerPos, y: 0 }}
                     >
-                        {
-                            (<div>
-                                <div className="box" style={{ width: 66, margin: 0, position: 'absolute', left: -66 / 2, padding: 0, backgroundColor: "rgba(185, 185, 185, 0.85)", border: 0, height: 20 }} >
-                                    {timeFormat(playedSeconds)}
-                                </div>
-                                <div className="seeker" style={{ width: 3, margin: 0, padding: 0, backgroundColor: '#FFFFFF', border: 0, height: 70 }} />
-                            </div>)
-                        }
+                        <div style={{ width: 1 }}>
+                            <div className="box" style={{ width: 'auto', margin: 0, position: 'absolute', left: -66 / 2, padding: 0, backgroundColor: "rgba(185, 185, 185, 0.85)", border: 0, height: 20 }} >
+                                {timeFormat(playedSeconds)}
+                            </div>
+                            <div className="seeker" style={{ width: 3, margin: 0, padding: 0, backgroundColor: '#FFFFFF', border: 1, height: 70, borderStyle: 'solid', borderTop: 0, borderBottom: 0 }} />
+                        </div>
                     </Draggable>
 
                     <div style={{ marginTop: -70 }}>
                         {/* Left bound */}
-                        <div className="boxL" style={{ backgroundColor: "rgba(255, 255, 255, 0.7)", border: 0, left: minBound, height: 70, width: endLeftBound - minBound, margin: 0, padding: 0 }} ></div>
+                        <div className="boxL" style={{ position: 'absolute', backgroundColor: "rgba(255, 255, 255, 0.7)", border: 0, left: -radius * 2, height: 70, width: endLeftBound, margin: 0, padding: 0 }} ></div>
 
                         {/* Right bound */}
-                        <div className="boxR" style={{ backgroundColor: "rgba(255, 255, 255, 0.7)", border: 0, left: startRightBound + 6, height: 70, width: maxBound - startRightBound, margin: 0, padding: 0 }} ></div>
+                        <div className="boxR" style={{ position: 'absolute', backgroundColor: "rgba(255, 255, 255, 0.7)", border: 0, left: startRightBound + radius * 2, height: 70, width: rightEnd - startRightBound - radius * 4, margin: 0, padding: 0 }} ></div>
 
                         <Draggable
                             axis="x"
@@ -214,8 +213,8 @@ export default function Editor() {
                             onStart={() => hideSeeker()}
                             onStop={() => showSeeker()}
                             id="start"
-                            defaultPosition={{ x: minBound, y: 0 }}
-                            bounds={{ left: minBound, right: startRightBound }}
+                            defaultPosition={{ x: minBound - radius * 2, y: 0 }}
+                            bounds={{ left: minBound - radius * 2, right: startRightBound - 40 }}
                         >
                             <div className="boxL rounded-l-lg" style={{ width: 10, margin: 0, padding: 0, backgroundColor: '#D62E2E', border: 0, height: 70, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#FFFFFF' }} ><MdArrowBackIos size={14} /></div>
                         </Draggable>
@@ -224,8 +223,8 @@ export default function Editor() {
                             onDrag={(e, data) => handleDrag(data, "end")}
                             onStart={() => hideSeeker("end")}
                             id="end"
-                            defaultPosition={{ x: maxBound - 3, y: 0 }}
-                            bounds={{ left: endLeftBound, right: maxBound - 3 }}
+                            defaultPosition={{ x: maxBound - radius * 3, y: 0 }}
+                            bounds={{ left: endLeftBound + 40, right: maxBound - radius * 2 }}
                         >
                             <div className="boxR rounded-r-lg" style={{ width: 10, margin: 0, padding: 0, backgroundColor: '#D62E2E', border: 0, height: 70, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#FFFFFF', }} ><MdArrowForwardIos size={14} /></div>
                         </Draggable>
@@ -234,11 +233,11 @@ export default function Editor() {
 
             </div >
             <div style={{ display: 'flex', position: "absolute", bottom: 0, width: '100%', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5, marginTop: 5 }}>
-                <div className="" onClick={back} style={{ padding: 10, marginLeft: 20, marginRight: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', fontSize: 18 }}><BiArrowBack size={18} style={{ marginRight: 5 }} />  Back</div>
+                <div className="" onClick={back} style={{ padding: 10, marginLeft: 20, marginRight: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', fontSize: 15 }}><BiArrowBack size={18} style={{ marginRight: 5 }} />  Back</div>
                 <div className="" onClick={pause} style={{ height: 'auto' }}> {videoPlaying
                     ? <GiPauseButton size={20} style={{ height: 'auto' }} />
                     : <GiPlayButton size={20} style={{ height: 'auto' }} />}</div>
-                <div onClick={next} style={{ backgroundColor: "#131312", color: "#FFFFFF", padding: 10, borderRadius: 25, marginRight: 20, marginLeft: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: 13, paddingRight: 13, fontSize: 18 }}>Next <BiArrowBack size={18} style={{ transform: 'scaleX(-1)', marginLeft: 5 }} /></div>
+                <div onClick={next} style={{ backgroundColor: "#131312", color: "#FFFFFF", padding: 10, borderRadius: 25, marginRight: 20, marginLeft: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: 13, paddingRight: 13, fontSize: 15 }}>Next <BiArrowBack size={18} style={{ transform: 'scaleX(-1)', marginLeft: 5 }} /></div>
             </div >
         </div >
     )
