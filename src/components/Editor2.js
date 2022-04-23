@@ -14,8 +14,7 @@ const radius = 4;
 //TODO hele komponenten må være responsiv og pen på mobil, er kun det det skal lages til, ikke web.
 
 
-export default function Editor() {
-    // let maxBound = 640 + radius;
+export default function Editor2() {
     let minBound = 0;
 
     const [width, setWidth] = useState(window.innerWidth);
@@ -171,7 +170,7 @@ export default function Editor() {
         console.log(rightEnd)
     }, []);
     return (
-        <div id="container" className="flex flex-col h-full" >
+        <div>
             <div style={{ margin: 0, width: '100%', height: height - 120, alignContent: "center", backgroundColor: '#000', maxHeight: height, maxWidth: width }
             }>
 
@@ -187,62 +186,10 @@ export default function Editor() {
                     width={'100%'}
                     height={'100%'}
                 />
-                <ClickableDiv className="md:w-32" id="containerBox" style={{ position: 'relative', backgroundColor: "#FFFFFF", width: maxBound - radius * 2, marginLeft: 'auto', marginRight: 'auto', maxWidth: maxBound - radius * 2 }} onClick={(event) => { changeSeekerPos(event.pageX); graphsVideoRef.current.seekTo((event.pageX - 20) / maxBound); }} >
-
-                    <div className="box" style={{ width: '100%', top: 66 / 2, position: 'absolute', padding: 0, backgroundColor: 'rgba(46, 46, 46, 1)', border: 0, height: 4, marginLeft: 'auto', marginRight: 'auto', maxWidth: maxBound - radius * 2 }} ></div>
-
-                    <Draggable
-                        axis="x"
-                        onDrag={(e, data) => handleDrag(data, "seeker")}
-                        id="seeker"
-                        defaultPosition={{ x: minBound, y: 0 }}
-                        bounds={{ left: endLeftBound, right: startRightBound - radius }}
-                        position={{ x: seekerPos, y: 0 }}
-                    >
-                        <div style={{ width: 1 }}>
-                            <div className="box" style={{ width: 'auto', margin: 0, position: 'absolute', left: -66 / 2, padding: 0, backgroundColor: '#FFFFFF', border: 0, height: 20 }} >
-                                {timeFormat(playedSeconds)}
-                            </div>
-                            <div className="seeker" style={{ width: 0, margin: 0, padding: 0, backgroundColor: 'rgba(46, 46, 46, 1)', border: 2, height: 50, borderStyle: 'solid', borderColor: 'rgba(46, 46, 46, 1)', borderTop: 0, borderBottom: 0 }} />
-                        </div>
-                    </Draggable>
-
-                    <div className="asdasd" style={{ marginTop: -30 }}>
-                        {/* Left bound */}
-                        {/* <div className="boxL" style={{ position: 'absolute', backgroundColor: "rgba(255, 255, 255, 0.7)", border: 0, left: -radius * 2, height: 70, width: endLeftBound, margin: 0, padding: 0 }} ></div> */}
-
-                        <div className="boxL" style={{ position: 'absolute', borderColor: 'rgba(46, 46, 46, 1)', backgroundColor: "#FFFFFF", left: -radius * 2, width: endLeftBound, top: 66 / 2, borderWidth: 3, borderStyle: 'dashed', borderRadius: 1, borderTop: 0, height: 1 }}></div>
-
-                        {/* Right bound */}
-                        {/* <div className="boxR" style={{ position: 'absolute', backgroundColor: "rgba(255, 255, 255, 0.7)", border: 0, left: startRightBound + radius * 2, height: 70, width: rightEnd - startRightBound - radius * 4, margin: 0, padding: 0 }} ></div> */}
-
-                        <div className="boxR" style={{ overflow: 'hidden', position: 'absolute', borderColor: 'rgba(46, 46, 46, 1)', backgroundColor: "#FFFFFF", left: startRightBound - radius, width: rightEnd - startRightBound - radius * 2, direction: 'ltr', top: 66 / 2, borderWidth: 3, borderStyle: 'dashed', borderRadius: 1, borderTop: 0, height: 1 }} ></div>
-
-                        <Draggable
-                            axis="x"
-                            onDrag={(e, data) => handleDrag(data, "start")}
-                            onStart={() => hideSeeker()}
-                            onStop={() => showSeeker()}
-                            id="start"
-                            defaultPosition={{ x: minBound - radius, y: 1 }}
-                            bounds={{ left: minBound - radius * 2, right: startRightBound - 40 }}
-                        >
-                            <div className="seeker" style={{ width: 0, margin: 0, padding: 0, backgroundColor: 'rgba(46, 46, 46, 1)', border: 2, height: 26, borderStyle: 'solid', borderColor: 'rgba(46, 46, 46, 1)', borderTop: 0, borderBottom: 0 }} ></div>
-                        </Draggable>
-                        <Draggable
-                            axis="x"
-                            onDrag={(e, data) => handleDrag(data, "end")}
-                            onStart={() => hideSeeker("end")}
-                            id="end"
-                            defaultPosition={{ x: maxBound - radius * 3, y: -25 }}
-                            bounds={{ left: endLeftBound + 40, right: maxBound - radius * 2 }}
-                        >
-                            <div className="seeker" style={{ width: 0, margin: 0, padding: 0, backgroundColor: 'rgba(46, 46, 46, 1)', border: 2, height: 26, borderStyle: 'solid', borderColor: 'rgba(46, 46, 46, 1)', borderTop: 0, borderBottom: 0 }} ></div>
-                        </Draggable>
-                    </div>
-                </ClickableDiv>
-
-            </div >
+            </div>
+            <div>
+                // alskdjalskdj
+            </div>
             <div style={{ display: 'flex', position: "absolute", bottom: 0, width: '100%', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5, marginTop: 5 }}>
                 <div className="" onClick={back} style={{ padding: 10, marginLeft: 20, marginRight: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', fontSize: 15 }}><BiArrowBack size={18} style={{ marginRight: 5 }} />  Back</div>
                 <div className="" onClick={pause} style={{ height: 'auto' }}> {videoPlaying
@@ -250,8 +197,7 @@ export default function Editor() {
                     : <GiPlayButton size={20} style={{ height: 'auto' }} />}</div>
                 <div onClick={next} style={{ backgroundColor: "#131312", color: "#FFFFFF", padding: 10, borderRadius: 25, marginRight: 20, marginLeft: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: 13, paddingRight: 13, fontSize: 15 }}>Next <BiArrowBack size={18} style={{ transform: 'scaleX(-1)', marginLeft: 5 }} /></div>
             </div >
-        </div >
+
+        </div>
     )
 }
-
-

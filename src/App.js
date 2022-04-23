@@ -1,6 +1,7 @@
 import './App.css';
 import React from "react";
 import Editor from "./components/Editor";
+import Editor2 from "./components/Editor2";
 
 
 function App() {
@@ -9,9 +10,9 @@ function App() {
     <div className="App">
 
       <div id="wrapper">
-        <Editor
+        <Editor2
         >
-        </Editor>
+        </Editor2>
       </div>
 
 
