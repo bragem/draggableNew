@@ -4,7 +4,6 @@ import ReactPlayer from "react-player";
 import captureVideoFrame from "capture-video-frame";
 import Myvideo from '../videos/bigBuckBunny.mp4';
 import ClickableDiv from 'react-clickable-div'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { BiArrowBack } from 'react-icons/bi'
 import { GiPauseButton, GiPlayButton } from 'react-icons/gi'
 import { MdArrowBackIos, MdArrowForwardIos } from 'react-icons/md'
@@ -17,7 +16,6 @@ const radius = 4;
 export default function Editor() {
     // let maxBound = 640 + radius;
     let minBound = 0;
-
 
     const [width, setWidth] = useState(window.innerWidth);
     const [height, setHeight] = useState(window.innerHeight);
@@ -102,14 +100,14 @@ export default function Editor() {
             changeVideoPlaying(false);
             changeSeekerPos(startRightBound)
             graphsVideoRef.current.seekTo(startRightBound / maxBound)
-            
+
         }
         else if (x < endLeftBound) {
             changeSeekerPos(endLeftBound)
             graphsVideoRef.current.seekTo(endLeftBound / maxBound)
         }
 
-        if (state.playedSeconds == right) {
+        if (state.playedSeconds === right) {
             console.log('hei')
             changeSeekerPos(startRightBound)
             graphsVideoRef.current.seekTo(endLeftBound / maxBound)
@@ -164,6 +162,9 @@ export default function Editor() {
     }, []);
 
     useEffect(() => {
+        // let frames = extractFramesFromVideo(Myvideo)
+        // console.log(frames)
+
         generateFrame();
         // console.log(width, height)
         console.log(maxBound, startRightBound, endLeftBound, seekerPos)
