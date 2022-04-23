@@ -211,12 +211,12 @@ export default function Editor() {
                         {/* Left bound */}
                         {/* <div className="boxL" style={{ position: 'absolute', backgroundColor: "rgba(255, 255, 255, 0.7)", border: 0, left: -radius * 2, height: 70, width: endLeftBound, margin: 0, padding: 0 }} ></div> */}
                         
-                        <div className="boxL" style={{ position: 'absolute', borderColor:'rgba(46, 46, 46, 1)', backgroundColor: "#FFFFFF", left: -radius * 2, width: endLeftBound, borderWidth:10, borderStyle:'dashed', borderRadius:1}}></div>
+                        <div className="boxL" style={{ position: 'absolute', borderColor:'rgba(46, 46, 46, 1)', backgroundColor: "#FFFFFF", left: -radius * 2, width: endLeftBound, top: 66/2, borderWidth: 3, borderStyle:'dashed', borderRadius:1, borderTop: 0, height: 1}}></div>
 
                         {/* Right bound */}
                         {/* <div className="boxR" style={{ position: 'absolute', backgroundColor: "rgba(255, 255, 255, 0.7)", border: 0, left: startRightBound + radius * 2, height: 70, width: rightEnd - startRightBound - radius * 4, margin: 0, padding: 0 }} ></div> */}
 
-                        <div className="boxR" style={{position: 'absolute', borderColor:'rgba(46, 46, 46, 1)', backgroundColor: "#FFFFFF", left: startRightBound + radius * 2, width: rightEnd - startRightBound - radius * 4, borderWidth:10, borderStyle:'dashed', borderRadius:1 }} ></div>
+                        <div className="boxR" style={{position: 'absolute', borderColor:'rgba(46, 46, 46, 1)', backgroundColor: "#FFFFFF", left: startRightBound + radius * 2, width: rightEnd - startRightBound - radius * 4, top: 66/2, borderWidth:3, borderStyle:'dashed', borderRadius:1, borderTop: 0, height: 1 }} ></div>
 
                         <Draggable
                             axis="x"
