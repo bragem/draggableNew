@@ -8,6 +8,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { BiArrowBack } from 'react-icons/bi'
 import { GiPauseButton, GiPlayButton } from 'react-icons/gi'
 import { MdArrowBackIos, MdArrowForwardIos } from 'react-icons/md'
+// import DashedLine from "react-native-dashed-line";
 
 const radius = 4;
 
@@ -126,11 +127,11 @@ export default function Editor() {
     }
 
 
-    function generateFrame() {
-        changeVideoPlaying(true);
-        const frame = captureVideoFrame(graphsVideoRef.current.getInternalPlayer());
-        setVidFrame(frame.dataUri);
-    }
+    // function generateFrame() {
+    //     changeVideoPlaying(true);
+    //     const frame = captureVideoFrame(graphsVideoRef.current.getInternalPlayer());
+    //     setVidFrame(frame.dataUri);
+    // }
 
     function cliptime() {
         // onClick the next next-button, this function is called
@@ -162,12 +163,7 @@ export default function Editor() {
     }, []);
 
     useEffect(() => {
-        // for (i=0; i < 10; i++)
-        // {
-        //     generateFrame();
-        // }
-        generateFrame();
-        generateFrame();
+        // generateFrame();
         // console.log(width, height)
         console.log(maxBound, startRightBound, endLeftBound, seekerPos)
         setMaxBound(width - radius * 2)
@@ -193,8 +189,10 @@ export default function Editor() {
                     width={'100%'}
                     height={'100%'}
                 />
-                <ClickableDiv className="md:w-32" id="containerBox" style={{ position: 'relative', backgroundColor: "gray", backgroundImage: `url(${frameVid})`, backgroundSize: 120, width: maxBound - radius * 2, marginLeft: 'auto', marginRight: 'auto', maxWidth: maxBound - radius * 2 }} onClick={(event) => { changeSeekerPos(event.pageX); graphsVideoRef.current.seekTo((event.pageX - 20) / maxBound); }} >
-                    {/* The magic number in the seek to function is the margin in the first div in this return aka 20 */}
+                <ClickableDiv className="md:w-32" id="containerBox" style={{ position: 'relative', backgroundColor: "#FFFFFF", width: maxBound - radius * 2, marginLeft: 'auto', marginRight: 'auto', maxWidth: maxBound - radius * 2 }} onClick={(event) => { changeSeekerPos(event.pageX); graphsVideoRef.current.seekTo((event.pageX - 20) / maxBound); }} >
+
+                        <div className="box" style={{ width: '100%', top: 66/2, position: 'absolute', padding: 0, backgroundColor: 'rgba(46, 46, 46, 1)', border: 0, height: 4, marginLeft: 'auto', marginRight: 'auto', maxWidth: maxBound - radius * 2 }} ></div>
+
                     <Draggable
                         axis="x"
                         onDrag={(e, data) => handleDrag(data, "seeker")}
@@ -204,19 +202,23 @@ export default function Editor() {
                         position={{ x: seekerPos, y: 0 }}
                     >
                         <div style={{ width: 1 }}>
-                            <div className="box" style={{ width: 'auto', margin: 0, position: 'absolute', left: -66 / 2, padding: 0, backgroundColor: "rgba(185, 185, 185, 0.85)", border: 0, height: 20 }} >
+                            <div className="box" style={{ width: 'auto', margin: 0, position: 'absolute', left: -66 / 2, padding: 0, backgroundColor: '#FFFFFF', border: 0, height: 20 }} >
                                 {timeFormat(playedSeconds)}
                             </div>
-                            <div className="seeker" style={{ width: 3, margin: 0, padding: 0, backgroundColor: '#FFFFFF', border: 1, height: 70, borderStyle: 'solid', borderTop: 0, borderBottom: 0 }} />
+                            <div className="seeker" style={{ width: 0, margin: 0, padding: 0, backgroundColor: 'rgba(46, 46, 46, 1)', border: 2, height: 50, borderStyle: 'solid', borderColor: 'rgba(46, 46, 46, 1)', borderTop: 0, borderBottom: 0 }} />
                         </div>
                     </Draggable>
 
-                    <div style={{ marginTop: -70 }}>
+                    <div style={{ marginTop: -30 }}>
                         {/* Left bound */}
-                        <div className="boxL" style={{ position: 'absolute', backgroundColor: "rgba(255, 255, 255, 0.7)", border: 0, left: -radius * 2, height: 70, width: endLeftBound, margin: 0, padding: 0 }} ></div>
+                        {/* <div className="boxL" style={{ position: 'absolute', backgroundColor: "rgba(255, 255, 255, 0.7)", border: 0, left: -radius * 2, height: 70, width: endLeftBound, margin: 0, padding: 0 }} ></div> */}
+                        
+                        <div className="boxL" style={{ position: 'absolute', borderColor:'rgba(46, 46, 46, 1)', backgroundColor: "#FFFFFF", left: -radius * 2, width: endLeftBound, borderWidth:10, borderStyle:'dashed', borderRadius:1}}></div>
 
                         {/* Right bound */}
-                        <div className="boxR" style={{ position: 'absolute', backgroundColor: "rgba(255, 255, 255, 0.7)", border: 0, left: startRightBound + radius * 2, height: 70, width: rightEnd - startRightBound - radius * 4, margin: 0, padding: 0 }} ></div>
+                        {/* <div className="boxR" style={{ position: 'absolute', backgroundColor: "rgba(255, 255, 255, 0.7)", border: 0, left: startRightBound + radius * 2, height: 70, width: rightEnd - startRightBound - radius * 4, margin: 0, padding: 0 }} ></div> */}
+
+                        <div className="boxR" style={{position: 'absolute', borderColor:'rgba(46, 46, 46, 1)', backgroundColor: "#FFFFFF", left: startRightBound + radius * 2, width: rightEnd - startRightBound - radius * 4, borderWidth:10, borderStyle:'dashed', borderRadius:1 }} ></div>
 
                         <Draggable
                             axis="x"
@@ -224,20 +226,20 @@ export default function Editor() {
                             onStart={() => hideSeeker()}
                             onStop={() => showSeeker()}
                             id="start"
-                            defaultPosition={{ x: minBound - radius * 2, y: 0 }}
+                            defaultPosition={{ x: minBound - radius, y: 0 }}
                             bounds={{ left: minBound - radius * 2, right: startRightBound - 40 }}
                         >
-                            <div className="boxL rounded-l-lg" style={{ width: 10, margin: 0, padding: 0, backgroundColor: '#D62E2E', border: 0, height: 70, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#FFFFFF' }} ><MdArrowBackIos size={14} /></div>
+                            <div className="seeker" style={{width: 0, margin: 0, padding: 0, backgroundColor: 'rgba(46, 46, 46, 1)', border: 4, height: 26, borderStyle: 'solid', borderColor: 'rgba(46, 46, 46, 1)', borderTop: 0, borderBottom: 0 }} ></div>
                         </Draggable>
                         <Draggable
                             axis="x"
                             onDrag={(e, data) => handleDrag(data, "end")}
                             onStart={() => hideSeeker("end")}
                             id="end"
-                            defaultPosition={{ x: maxBound - radius * 3, y: 0 }}
+                            defaultPosition={{ x: maxBound - radius * 3, y: -26 }}
                             bounds={{ left: endLeftBound + 40, right: maxBound - radius * 2 }}
                         >
-                            <div className="boxR rounded-r-lg" style={{ width: 10, margin: 0, padding: 0, backgroundColor: '#D62E2E', border: 0, height: 70, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#FFFFFF', }} ><MdArrowForwardIos size={14} /></div>
+                            <div className="seeker" style={{width: 0, margin: 0, padding: 0, backgroundColor: 'rgba(46, 46, 46, 1)', border: 4, height: 26, borderStyle: 'solid', borderColor: 'rgba(46, 46, 46, 1)', borderTop: 0, borderBottom: 0 }} ></div>
                         </Draggable>
                     </div>
                 </ClickableDiv>
