@@ -10,9 +10,9 @@ function App() {
     <div className="App">
 
       <div id="wrapper">
-        <Editor2
+        <Editor
         >
-        </Editor2>
+        </Editor>
       </div>
 
 
