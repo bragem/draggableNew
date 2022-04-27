@@ -1,20 +1,15 @@
 import Draggable from "react-draggable";
 import { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
-import captureVideoFrame from "capture-video-frame";
 import Myvideo from '../videos/bigBuckBunny.mp4';
 import ClickableDiv from 'react-clickable-div'
 import { BiArrowBack } from 'react-icons/bi'
 import { GiPauseButton, GiPlayButton } from 'react-icons/gi'
-import { MdArrowBackIos, MdArrowForwardIos } from 'react-icons/md'
-// import DashedLine from "react-native-dashed-line";
-
-const radius = 0; // radius trimmer handle - how out they start from the rim of the device - should be set to 0
 
 export default function Editor() {
     let minBound = 0;
 
-    const [width, setWidth] = useState(window.innerWidth-20);
+    const [width, setWidth] = useState(window.innerWidth-66);
     const [height, setHeight] = useState(window.innerHeight);
 
     const [maxBound, setMaxBound] = useState(width-4);
@@ -25,8 +20,6 @@ export default function Editor() {
     const [seekerPos, changeSeekerPos] = useState(0);
     const [videoPlaying, changeVideoPlaying] = useState(false);
     const [tmpSeekPos, changeTmpSeekPos] = useState(null);
-    const [frameVid, setVidFrame] = useState(null);
-    const [rightEnd, setRightEnd] = useState(width)
 
     const [playedSeconds, updatePlayedSeconds] = useState(0);
 
@@ -40,21 +33,19 @@ export default function Editor() {
 
     function handleDrag(data, name) { // controls how to seekers behave when they are dragged
         if (name === "start") {
-            changeSeekerPos(data.x); // radius*2 does not seem to have any effect - radius is set to 0
+            changeSeekerPos(data.x);
             graphsVideoRef.current.seekTo(data.x);
-            setEndBound(data.x); // Needed to keep the seeker in the classic allowable area. With raduis = 0, the seeker can overlap with the trimmer handle
-                                                // is that something we want to allow
+            setEndBound(data.x);
             changeVideoPlaying(true);
 
-        } else if (name === "end") { // same remarks as over 
+        } else if (name === "end") { 
             changeSeekerPos(data.x);
             graphsVideoRef.current.seekTo(seekerPos);
             setStartBound(data.x);
             changeVideoPlaying(true);
 
         } else if (name === "seeker") {
-            graphsVideoRef.current.seekTo(data.x / maxBound); // the maxbound is needed if the seeker is dragged to get it to stay at current x.pos 
-                                                                // other does not seem to need maxbound (seeker need it)
+            graphsVideoRef.current.seekTo(data.x / maxBound);
             changeSeekerPos(data.x / maxBound)
         }
         else if (name === "seeker") {
@@ -115,14 +106,14 @@ export default function Editor() {
         updatePlayedSeconds(Math.floor(state.playedSeconds));
     }
 
-    function timeFormat(seconds) { // this is good
+    function timeFormat(seconds) { 
         var convert = function (x) { return (x < 10) ? "0" + x : x; }
         return convert(parseInt(seconds / (60 * 60))) + ":" +
             convert(parseInt(seconds / 60 % 60)) + ":" +
             convert(seconds % 60)
     }
 
-    function cliptime() { // this is also good
+    function cliptime() {
         // onClick the next next-button, this function is called
         var length = graphsVideoRef.current.getDuration()
         var left = length * (endLeftBound - minBound) / maxBound
@@ -154,13 +145,12 @@ export default function Editor() {
     useEffect(() => {
         console.log(maxBound, startRightBound, endLeftBound, seekerPos)
         setMaxBound(width)
-        // setEndBound(radius * 2) // This does not seem to do anything 
         changeSeekerPos(minBound)
         console.log(maxBound, startRightBound, endLeftBound, seekerPos)
     }, []);
     return (
         <div id="container" className="flex flex-col h-full" >
-            <div style={{ margin: 10, width: '100%', height: height-120, alignContent: "center", backgroundColor: '#000', maxHeight: height, maxWidth: width }
+            <div style={{ margin: 33, width: '100%', height: height-120, alignContent: "center", backgroundColor: '#000', maxHeight: height, maxWidth: width }
             }>
 
                 <ReactPlayer
@@ -176,7 +166,7 @@ export default function Editor() {
                     height={'100%'}
                 />
                 <div>
-                    <ClickableDiv className="md:w-32" id="containerBox" style={{ overflow: 'hidden', position: 'relative', backgroundColor: "#FFFFFF", width: maxBound, marginLeft: 'auto', marginRight: 'auto', maxWidth: maxBound}} onClick={(event) => { changeSeekerPos(event.pageX); graphsVideoRef.current.seekTo((event.pageX)/maxBound); }} >
+                    <ClickableDiv className="md:w-32" id="containerBox" style={{ overflow: 'visible', position: 'relative', backgroundColor: "#FFFFFF", width: maxBound, marginLeft: 'auto', marginRight: 'auto', maxWidth: maxBound}} onClick={(event) => { changeSeekerPos(event.pageX); graphsVideoRef.current.seekTo((event.pageX-33)/maxBound); }} >
 
                         <div className="box" style={{ width: '100%', top: 66/2, position: 'absolute', padding: 0, backgroundColor: 'rgba(46, 46, 46, 1)', border: 0, height: 4, marginLeft: 'auto', marginRight: 'auto', maxWidth: maxBound}} ></div> {/*66/2 is just a design number, to allign bold line with dotted line, the same with height(4)*/}
 
