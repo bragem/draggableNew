@@ -9,12 +9,12 @@ import { GiPauseButton, GiPlayButton } from 'react-icons/gi'
 export default function Editor() {
     let minBound = 0;
 
-    const [width, setWidth] = useState(window.innerWidth-66);
+    const [width, setWidth] = useState(window.innerWidth - 66);
     const [height, setHeight] = useState(window.innerHeight);
 
-    const [maxBound, setMaxBound] = useState(width-4);
+    const [maxBound, setMaxBound] = useState(width - 4);
 
-    const [startRightBound, setStartBound] = useState(maxBound);
+    const [startRightBound, setStartBound] = useState(maxBound - 60);
     const [endLeftBound, setEndBound] = useState(0);
     const graphsVideoRef = useRef(null);
     const [seekerPos, changeSeekerPos] = useState(0);
@@ -38,7 +38,7 @@ export default function Editor() {
             setEndBound(data.x);
             changeVideoPlaying(true);
 
-        } else if (name === "end") { 
+        } else if (name === "end") {
             changeSeekerPos(data.x);
             graphsVideoRef.current.seekTo(seekerPos);
             setStartBound(data.x);
@@ -106,7 +106,7 @@ export default function Editor() {
         updatePlayedSeconds(Math.floor(state.playedSeconds));
     }
 
-    function timeFormat(seconds) { 
+    function timeFormat(seconds) {
         var convert = function (x) { return (x < 10) ? "0" + x : x; }
         return convert(parseInt(seconds / (60 * 60))) + ":" +
             convert(parseInt(seconds / 60 % 60)) + ":" +
@@ -150,7 +150,7 @@ export default function Editor() {
     }, []);
     return (
         <div id="container" className="flex flex-col h-full" >
-            <div style={{ margin: 33, marginTop:0, width: '100%', height: height-120, alignContent: "center", backgroundColor: '#000', maxHeight: height, maxWidth: width } 
+            <div style={{ marginTop: 0, width: '100%', height: height - 120, alignContent: "center", backgroundColor: '#000' }
             }>
 
                 <ReactPlayer
@@ -165,10 +165,10 @@ export default function Editor() {
                     width={'100%'}
                     height={'100%'}
                 />
-                <div>
-                    <ClickableDiv className="md:w-32" id="containerBox" style={{ overflow: 'visible', position: 'relative', backgroundColor: "#FFFFFF", width: maxBound, marginLeft: 'auto', marginRight: 'auto', maxWidth: maxBound}} onClick={(event) => { changeSeekerPos(event.pageX); graphsVideoRef.current.seekTo((event.pageX-33)/maxBound); }} >
+                <div style={{ marginLeft: 30, marginRight: 30 }}>
+                    <ClickableDiv className="md:w-32" id="containerBox" style={{ position: 'relative', backgroundColor: "#FFFFFF", width: maxBound - 60, marginLeft: 'auto', marginRight: 'auto', maxWidth: maxBound }} onClick={(event) => { changeSeekerPos(event.pageX); graphsVideoRef.current.seekTo((event.pageX - 33) / maxBound); }} >
 
-                        <div className="box" style={{ width: '100%', top: 66/2, position: 'absolute', padding: 0, backgroundColor: 'rgba(46, 46, 46, 1)', border: 0, height: 4, marginLeft: 'auto', marginRight: 'auto', maxWidth: maxBound}} ></div> {/*66/2 is just a design number, to allign bold line with dotted line, the same with height(4)*/}
+                        <div className="box" style={{ width: '100%', top: 66 / 2, position: 'absolute', padding: 0, backgroundColor: 'rgba(46, 46, 46, 1)', border: 0, height: 4, marginLeft: 'auto', marginRight: 'auto', maxWidth: maxBound }} ></div> {/*66/2 is just a design number, to allign bold line with dotted line, the same with height(4)*/}
 
                         <Draggable
                             axis="x"
@@ -186,12 +186,12 @@ export default function Editor() {
                             </div>
                         </Draggable>
 
-                        <div className="asdasd" style={{marginTop: -30, overflow: 'hidden'}}>
+                        <div className="asdasd" style={{ marginTop: -30 }}>
                             {/* Left bound */}
                             <div className="boxL" style={{ position: 'absolute', borderColor: 'rgba(46, 46, 46, 1)', backgroundColor: "#FFFFFF", left: 0, width: endLeftBound, top: 33, borderWidth: 3, borderStyle: 'dashed', borderRadius: 1, borderTop: 0, height: 1 }}></div>
 
                             {/* Right bound */}
-                            <div className="boxR" style={{ position: 'absolute', borderColor: 'rgba(46, 46, 46, 1)', backgroundColor: "#FFFFFF", left: startRightBound , width: width - startRightBound, direction: 'ltr', top: 66 / 2, borderWidth: 3, borderStyle: 'dashed', borderRadius: 1, borderTop: 0, height: 1 }} ></div> {/*den hvite tingen på siden*/}
+                            <div className="boxR" style={{ position: 'absolute', borderColor: 'rgba(46, 46, 46, 1)', backgroundColor: "#FFFFFF", left: startRightBound, width: width - 60 - startRightBound, direction: 'ltr', top: 66 / 2, borderWidth: 3, borderStyle: 'dashed', borderRadius: 1, borderTop: 0, height: 1 }} ></div> {/*den hvite tingen på siden*/}
 
                             <Draggable
                                 axis="x"
@@ -209,8 +209,8 @@ export default function Editor() {
                                 onDrag={(e, data) => handleDrag(data, "end")}
                                 onStart={() => hideSeeker("end")}
                                 id="end"
-                                defaultPosition={{ x: maxBound, y: -25 }}
-                                bounds={{ left: endLeftBound + 40, right: maxBound-4 }}
+                                defaultPosition={{ x: maxBound - 60, y: -25 }}
+                                bounds={{ left: endLeftBound + 40, right: maxBound - 60 }}
                             >
                                 <div className="seeker" style={{ width: 0, margin: 0, padding: 0, backgroundColor: 'rgba(46, 46, 46, 1)', border: 2, height: 26, borderStyle: 'solid', borderColor: 'rgba(46, 46, 46, 1)', borderTop: 0, borderBottom: 0 }} ></div>
                             </Draggable>
