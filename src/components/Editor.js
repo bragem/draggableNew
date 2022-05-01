@@ -150,7 +150,7 @@ export default function Editor() {
     }, []);
     return (
         <div id="container" className="flex flex-col h-full" >
-            <div style={{ margin: 33, width: '100%', height: height-120, alignContent: "center", backgroundColor: '#000', maxHeight: height, maxWidth: width }
+            <div style={{ margin: 33, marginTop:0, width: '100%', height: height-120, alignContent: "center", backgroundColor: '#000', maxHeight: height, maxWidth: width } 
             }>
 
                 <ReactPlayer
